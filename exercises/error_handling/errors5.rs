@@ -4,17 +4,15 @@
 // It won't compile right now! Why?
 // Execute `rustlings hint errors5` for hints!
 
-// I AM NOT DONE
-
 use std::error;
 use std::fmt;
 use std::num::ParseIntError;
 
 // TODO: update the return type of `main()` to make this compile.
-fn main() -> Result<(), ParseIntError> {
+fn main() -> Result<(), Box<dyn error::Error>> {
     let pretend_user_input = "42";
     let x: i64 = pretend_user_input.parse()?;
-    println!("output={:?}", PositiveNonzeroInteger::new(x)?);
+    println!("output={}", PositiveNonzeroInteger::new(x)?);
     Ok(())
 }
 
@@ -47,6 +45,12 @@ impl fmt::Display for CreationError {
             CreationError::Zero => "number is zero",
         };
         f.write_str(description)
+    }
+}
+
+impl fmt::Display for PositiveNonzeroInteger {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        f.write_fmt(format_args!("{} is positive!", self.0))
     }
 }
 
